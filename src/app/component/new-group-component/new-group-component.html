@@ -1,0 +1,40 @@
+<div class="min-h-screen bg-white dark:bg-gray-900 p-4">
+  <div class="max-w-md mx-auto">
+    <h2 class="text-2xl font-bold mb-4 text-gray-900 dark:text-white">Criar Grupo</h2>
+
+    <div class="mb-4">
+      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nome do Grupo *</label>
+      <input type="text"
+        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+        [(ngModel)]="groupName"
+        maxlength="50">
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{ groupName.length }}/50 caracteres</p>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Descrição (opcional)</label>
+        <textarea
+          class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 dark:bg-gray-800 dark:border-gray-700 dark:text-white"
+          [(ngModel)]="groupDescription"
+        maxlength="200"></textarea>
+        <p class="text-xs text-gray-500 dark:text-gray-400">{{ groupDescription.length }}/200 caracteres</p>
+      </div>
+
+      <div class="mb-4">
+        <label class="block text-sm font-medium text-gray-700 dark:text-gray-300">Adicionar Membros</label>
+        <div class="mt-2 space-y-2">
+          @for (user of availableUsers; track user) {
+            <div class="flex items-center">
+              <input type="checkbox" [id]="user.id" [value]="user.id" [(ngModel)]="user.selected" class="rounded border-gray-300 text-indigo-600 focus:ring-indigo-500">
+              <label [for]="user.id" class="ml-2 text-sm text-gray-700 dark:text-gray-300">{{ user.name }}</label>
+            </div>
+          }
+        </div>
+      </div>
+
+      <div class="flex justify-between">
+        <button (click)="cancel()" class="px-4 py-2 border border-gray-300 rounded-md text-gray-700 dark:border-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800">Cancelar</button>
+        <button (click)="next()" class="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700">Próximo</button>
+      </div>
+    </div>
+  </div>
