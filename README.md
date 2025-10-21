@@ -1,59 +1,65 @@
 # ChatApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
+Ce projet a été généré avec [Angular CLI](https://github.com/angular/angular-cli) version 20.0.5.
 
-## Development server
+Objectif de cette mise à jour: améliorer la structure d'une application de messagerie temps réel (architecture plus claire, services dédiés, modèles de données, et préparation aux WebSockets).
 
-To start a local development server, run:
+## Structure du code (principaux dossiers)
+
+- src/app
+  - app.ts, app.html, app.routes.ts
+  - component/ ... composants UI existants (login, chats, chat-list, chat-detail, etc.)
+  - model/ ... interfaces attendues par les composants existants (Conversation, Message, Group, User)
+  - models/ ... modèles normalisés pour une future évolution (Chat, Message, UserRef)
+  - service/
+    - theme-service.ts
+    - websocket-service.ts (nouveau) — encapsule la connexion WebSocket (connect, send, on, events$)
+    - chat-service.ts (adapté) — expose l'API attendue par les composants (getConversations, getConversation, getMessages, sendMessage, sendFile, getUser, getUsers, getGroup) et prépare l'intégration temps réel
+
+Cette organisation permet de conserver les composants existants tout en introduisant une base plus propre et extensible pour la messagerie temps réel.
+
+## Démarrer le serveur de développement
 
 ```bash
 ng serve
 ```
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+Ensuite, ouvrez votre navigateur sur `http://localhost:4200/`. L'application se rechargera automatiquement à chaque modification des fichiers sources.
 
-## Code scaffolding
+## Génération de code
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+Pour générer un nouveau composant :
 
 ```bash
 ng generate component component-name
 ```
 
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+Pour lister les schémas disponibles :
 
 ```bash
 ng generate --help
 ```
 
-## Building
-
-To build the project run:
+## Build
 
 ```bash
 ng build
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+Les artefacts seront dans `dist/`. Le build de production applique les optimisations par défaut.
 
-## Running unit tests
-
-To execute unit tests with the [Karma](https://karma-runner.github.io) test runner, use the following command:
+## Tests unitaires
 
 ```bash
 ng test
 ```
 
-## Running end-to-end tests
+## E2E
 
-For end-to-end (e2e) testing, run:
+Angular CLI n'installe pas d'outil e2e par défaut — choisissez la solution qui vous convient.
 
-```bash
-ng e2e
-```
+## Notes d'architecture
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
-
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+- WebSocketService centralise la connexion WebSocket et la diffusion d'événements typés.
+- ChatService fournit une API simple pour les composants actuels (stockage en mémoire + événements WebSocket). Il pourra évoluer vers l'usage complet des modèles `models/`.
+- Les interfaces de `model/` servent d'adaptateur pour ne pas casser le code existant pendant la transition vers une architecture feature/core/shared plus modulaire.
